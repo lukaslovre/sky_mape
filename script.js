@@ -38,6 +38,19 @@ const housesList = [
     latlng: [45.79, 16.05],
     type: "building",
   },
+  {
+    popupData: {
+      imgUrl: "https://www.houseplans.net/news/wp-content/uploads/2023/07/57260-768.jpeg",
+      titleContent: "Prostrana Moderan Stan u Središtu Zagreba",
+      descriptionContent:
+        "Elegantan stan smješten u srcu Zagreba. Ovaj moderan dom ima prostrane sobe, prekrasan pogled i blizinu kulturnih znamenitosti.",
+      linkValue: "#",
+      surfaceArea: 90,
+      price: 320000,
+    },
+    latlng: [45.78, 15.94],
+    type: "business",
+  },
 ];
 
 const zagrebLocation = {
@@ -95,7 +108,7 @@ map.on("click", function (e) {
 // Form handling
 const form = document.getElementById("filterHouses");
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("input", (event) => {
   event.preventDefault();
 
   const formData = new FormData(form);
@@ -111,6 +124,7 @@ form.addEventListener("submit", (event) => {
       min: parseInt(formData.get("sizeMin")) || 0,
       max: parseInt(formData.get("sizeMax")) || Infinity,
     },
+    type: formData.get("type"),
   };
   console.log(parsedFormData);
 
@@ -132,6 +146,8 @@ form.addEventListener("submit", (event) => {
       house.popupData.surfaceArea > parsedFormData.size.max
     )
       return false;
+
+    if (parsedFormData.type && house.type !== parsedFormData.type) return false;
 
     return true;
   });
