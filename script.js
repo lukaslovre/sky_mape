@@ -10,6 +10,7 @@ const housesList = [
       price: 350000,
     },
     latlng: [45.81, 15.98],
+    type: "house",
   },
   {
     popupData: {
@@ -22,6 +23,7 @@ const housesList = [
       price: 220000,
     },
     latlng: [45.82, 15.92],
+    type: "house",
   },
   {
     popupData: {
@@ -34,6 +36,7 @@ const housesList = [
       price: 450000,
     },
     latlng: [45.79, 16.05],
+    type: "building",
   },
 ];
 
@@ -65,9 +68,19 @@ const tileLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.pn
 map.addLayer(tileLayer);
 
 const renderMarkers = (housesList) => {
-  // add a markers to the map
   housesList.forEach((house) => {
-    L.marker(house.latlng).addTo(map).bindPopup(createPopupHtml(house.popupData));
+    const markerOptions = {
+      icon: L.icon({
+        iconUrl: `./images/${house.type}.png`,
+        iconSize: [48, 72],
+        iconAnchor: [24, 72],
+        popupAnchor: [0, -72],
+      }),
+    };
+
+    L.marker(house.latlng, markerOptions)
+      .addTo(map)
+      .bindPopup(createPopupHtml(house.popupData));
   });
 };
 
